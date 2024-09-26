@@ -8,15 +8,15 @@ function App() {
   
   const [name, setName] = useState(["tom", "Bish"]);
   const [age, setAge] = useState([10, 20]);
-  const [avAge, setAvgAge] = useState([]);
+  const [avAge, setAvgAge] = useState([1]);
 
   function addNameAge(){
     setName([...name, "Jerry"]);
-    setAge([...age, "50"]);
+    setAge([...age, 50]);
   }
 
   function averageAge(){
-    setAvgAge([age.reduce((final, age) => final + age)])
+    setAvgAge([age.reduce((finalAge, age) => age + finalAge) / age.length])
   }
 
   return (
