@@ -8,7 +8,7 @@ function App() {
   
   const [name, setName] = useState(["tom", "Bish"]);
   const [age, setAge] = useState([10, 20]);
-  const [avAge, setAvgAge] = useState([1]);
+  const [avAge, setAvgAge] = useState([]);
 
   function addNameAge(){
     setName([...name, "Jerry"]);
