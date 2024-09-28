@@ -1,23 +1,52 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import axios from 'axios';
 
 function App() {
   // const [count, setCount] = useState(0)
-  
-  const [name, setName] = useState(["tom", "Bish"]);
-  const [age, setAge] = useState([10, 20]);
-  const [avAge, setAvgAge] = useState([]);
 
+  const [name, setName] = useState([{
+    name: "Tom",
+    age: 20,
+  },
+  {
+    name: "bell",
+    age: 30
+  }]);
+
+  const [newName, setNewName] = useState("testName");
+  const [newAge, setNewAge] = useState();
+
+  
+  // const [age, setAge] = useState([10, 20, 10]);
+  const [avAge, setAvgAge] = useState();
+// 
   function addNameAge(){
-    setName([...name, "Jerry"]);
-    setAge([...age, 50]);
+    setName([...name, {name: newName, age: newAge}]);
   }
 
   function averageAge(){
-    setAvgAge([age.reduce((finalAge, age) => age + finalAge) / age.length])
+    const ages = name.map((x) => x.age)
+    return ages.reduce((finalAge, ages) => ages + finalAge) / ages.length;
   }
+
+  function handleAddName(e){
+    setNewName(e.target.value);
+  }
+
+  function handleAddAge(e){
+    setNewAge(e.target.value);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
+      console.log(result.data.abilities);
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -28,29 +57,30 @@ function App() {
 
     <div id="div1">
       {name.map((x, index) => {
-          return (<p key={index}>{x}</p>)
+          return (<p key={index}>{x.name} {x.age}</p>)
           })}
     </div>
 
-    <div id="div2">
+    {/* <div id="div2">
       {age.map((x, index) => {
       return (<p key={index}>{x}</p>)
       })}
-    </div>
+    </div> */}
 
     <div id="div3">
-    {avAge.map((x, index) => {
-      return (<p key={index}>{x}</p>)
-      })}
+      {averageAge()}
     </div>
 
+
+  <input type="text" value={newName} onChange={handleAddName} />
+  <input type="number" value={newAge} onChange={handleAddAge} />
 
    <div id="button">
     <button onClick={addNameAge}>
       Add Name and Age
     </button>
 
-    <button onClick={averageAge}>
+    <button onClick={averageAge()}>
       Calc average age
     </button>
   </div>
