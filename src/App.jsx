@@ -5,46 +5,61 @@ import './App.css'
 import axios from 'axios';
 
 function App() {
-  // const [count, setCount] = useState(0)
+  const [planetName, setName] = useState([]);
 
-  const [name, setName] = useState([{
-    name: "Tom",
-    age: 20,
-  },
-  {
-    name: "bell",
-    age: 30
-  }]);
+  const planets = ["Mercury", "Venus"]
 
-  const [newName, setNewName] = useState("testName");
-  const [newAge, setNewAge] = useState();
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: 'https://api.api-ninjas.com/v1/planets?name=',
+    headers: { 
+      'X-Api-Key': 'TguXuASpapD/bZod0M0EGA==SEhTuO2TbuzVM8WG'
+    }
+  };
 
-  
-  // const [age, setAge] = useState([10, 20, 10]);
-  const [avAge, setAvgAge] = useState();
-// 
-  function addNameAge(){
-    setName([...name, {name: newName, age: newAge}]);
-  }
+async function foo() {
+    for (let i = 0 ; i < planets.length ; i++){
+      config.url = 'https://api.api-ninjas.com/v1/planets?name=';
+      try {
+        config.url = config.url + planets[i];
+        //console.log(config.url);
+        let a = await axios.request(config);
+        setName([...planetName, a.data[0].name]);
+        console.log(a.data[0].name);
+      } catch (e) {
+        console.error(e)
+      } 
+    }
+}
 
-  function averageAge(){
-    const ages = name.map((x) => x.age)
-    return ages.reduce((finalAge, ages) => ages + finalAge) / ages.length;
-  }
 
-  function handleAddName(e){
-    setNewName(e.target.value);
-  }
-
-  function handleAddAge(e){
-    setNewAge(e.target.value);
-  }
+/* async function getPlanetDetails(){
+  const result = await axios.request(config);
+  console.log(result.data[0].name + "   " + result.data[0].mass);
+}*/
 
   useEffect(() => {
     async function fetchData() {
-      const result = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto");
-      console.log(result.data.abilities);
-    }
+
+ /*   Promise.allSettled(
+      planets.map(async (planets) => {
+        const result = await axios.request<IMatchStats>({
+          url: `https://api.api-ninjas.com/v1/planets?name=${planets}`,
+          method: 'get',
+          headers: {
+            'X-Api-Key': 'abc'
+          },
+        });
+        console.log(result);
+        }
+      )
+    );
+    */
+   await foo();
+   console.log();
+    
+  }
     fetchData();
   }, []);
 
@@ -54,36 +69,16 @@ function App() {
       Sample React App
     </h2>
 
-
     <div id="div1">
-      {name.map((x, index) => {
-          return (<p key={index}>{x.name} {x.age}</p>)
+      {planetName.map((x, index) => {
+          return (<p key={index}>{x}</p>)
           })}
     </div>
 
-    {/* <div id="div2">
-      {age.map((x, index) => {
-      return (<p key={index}>{x}</p>)
-      })}
-    </div> */}
-
-    <div id="div3">
-      {averageAge()}
+    <div id="div2">
+      {planetName}
     </div>
 
-
-  <input type="text" value={newName} onChange={handleAddName} />
-  <input type="number" value={newAge} onChange={handleAddAge} />
-
-   <div id="button">
-    <button onClick={addNameAge}>
-      Add Name and Age
-    </button>
-
-    <button onClick={averageAge()}>
-      Calc average age
-    </button>
-  </div>
 
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
