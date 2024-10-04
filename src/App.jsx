@@ -9,7 +9,7 @@ function App() {
     {}
   ]);
 
-  const planets = ["Mercury", "Venus"]
+  const planets = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"]
 
   let config = {
     method: 'get',
