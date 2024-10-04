@@ -5,7 +5,9 @@ import './App.css'
 import axios from 'axios';
 
 function App() {
-  const [planetName, setName] = useState([]);
+  const [planetNameMass, setName] = useState([
+    {}
+  ]);
 
   const planets = ["Mercury", "Venus"]
 
@@ -25,8 +27,9 @@ async function foo() {
         config.url = config.url + planets[i];
         //console.log(config.url);
         let a = await axios.request(config);
-        setName([...planetName, a.data[0].name]);
-        console.log(a.data[0].name);
+        setName((planetNameMass) => [...planetNameMass, {name: a.data[0].name, mass: a.data[0].mass}]);
+        //setName((planetNameMass) => [...planetNameMass[i].mass, a.data[0].mass]);
+        console.log(a.data[0].name, a.data[0].mass);
       } catch (e) {
         console.error(e)
       } 
@@ -70,13 +73,13 @@ async function foo() {
     </h2>
 
     <div id="div1">
-      {planetName.map((x, index) => {
-          return (<p key={index}>{x}</p>)
+      {planetNameMass.map((x, index) => {
+          return (<p key={index}>{x.name}&nbsp;&nbsp;&nbsp;{x.mass}</p>)
           })}
     </div>
 
     <div id="div2">
-      {planetName}
+      {}
     </div>
 
 
